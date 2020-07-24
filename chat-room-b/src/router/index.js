@@ -3,7 +3,7 @@ import Vue from 'vue'
 
 Vue.use(Router)
 
-const myView = () => import('../views/my-view.vue')
+const myView = () => import('../views/login-page.vue')
 
 const routes = [{
 	path: '/',
