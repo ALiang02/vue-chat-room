@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import Cookies from "js-cookie";
+
 export default {
     data: function () {
         return {
@@ -37,6 +39,7 @@ export default {
                 .then((rep) => {
                     if (rep.data["flag"] === 0) {
                         this.$router.push("/center");
+                        Cookies.set("user_name", this.user.user_name);
                     } else {
                         alert("账号或密码错误");
                     }

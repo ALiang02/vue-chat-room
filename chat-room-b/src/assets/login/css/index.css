@@ -18,6 +18,7 @@ input[type="text"] {
 	font-size: 18px;
 	background: url(../images/adm.png) no-repeat 10px 15px;
 	border: none;
+	outline: none;
 	font-weight: 100;
 	border-bottom: 1px solid#484856;
 	margin-top: 2em;
@@ -29,6 +30,7 @@ input[type="password"]{
 	font-size: 18px;	
 	background: url(../images/key.png) no-repeat 10px 23px;
 	border: none;
+	outline: none;
 	font-weight: 100;
 	border-bottom: 1px solid#484856;
 	margin-bottom: 3em;

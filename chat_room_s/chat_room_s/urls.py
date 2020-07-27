@@ -16,9 +16,46 @@ Including another URLconf
 import json
 
 from django.contrib import admin
+from dwebsocket.decorators import accept_websocket
 from django.http import JsonResponse
 from django.urls import path
 from data_base import base
+
+users = []
+wss = []
+
+
+@accept_websocket
+def test(request):
+    print(request.websocket)
+    if request.is_websocket():
+        print(request)
+        try:
+            while 1:
+                message = request.websocket.wait()  # 接受前段发送来的数据
+                rep_data = ''
+                if message:
+                    message = eval(bytes.decode(message))
+                    print(message)
+                    print(type(message))
+                    if (message['act'] == 'init'):
+                        users.append({
+                            'user_name': message['user_name'],
+                            'ws': request.websocket
+                        })
+                        rep_data = {
+                            'act': 'message',
+                            'message': '连接成功'
+                        }
+                    print(users)
+                    request.websocket.send(json.dumps(rep_data).encode())  # 发送给前段的数据
+
+        except Exception as e:
+            for user in users:
+                if (user['ws'] == request.websocket):
+                    users.remove(user)
+            request.websocket.close()
+            return
 
 
 def login(req):
@@ -47,6 +84,92 @@ def login(req):
     return JsonResponse(data)
 
 
+def description_offer(req):
+    print(req.POST.get('data'))
+    req_data = json.loads(req.POST.get('data'))
+    print(req_data)
+    user_from = req_data['user_from']
+    user_to = req_data['user_to']
+    description = req_data['description']
+
+    message = {
+        'act': 'description_offer',
+        'description': description,
+        'user_from': user_to,
+        'user_to': user_from
+    }
+    for user in users:
+        if (user['user_name'] == user_to):
+            user['ws'].send(json.dumps(message).encode())
+            break
+    return JsonResponse({})
+
+
+def description_answer(req):
+    req_data = json.loads(req.POST.get('data'))
+
+    user_from = req_data['user_from']
+    user_to = req_data['user_to']
+    description = req_data['description']
+
+    message = {
+        'act': 'description_answer',
+        'description': description,
+        'user_from': user_to,
+        'user_to': user_from
+    }
+    for user in users:
+        if user['user_name'] == user_to:
+            user['ws'].send(json.dumps(message).encode())
+            break
+    return JsonResponse({})
+
+
+def ic_offer(req):
+    req_data = json.loads(req.POST.get('data'))
+    print(req_data)
+    user_from = req_data['user_from']
+    user_to = req_data['user_to']
+    ic = req_data['ic']
+
+    message = {
+        'act': 'ic_offer',
+        'description': ic,
+        'user_from': user_to,
+        'user_to': user_from
+    }
+    for user in users:
+        if user['user_name'] == user_to:
+            user['ws'].send(json.dumps(message).encode())
+            break
+    return JsonResponse({})
+
+
+def ic_answer(req):
+    req_data = json.loads(req.POST.get('data'))
+    print(req_data)
+    user_from = req_data['user_from']
+    user_to = req_data['user_to']
+    ic = req_data['ic']
+
+    message = {
+        'act': 'ic_answer',
+        'description': ic,
+        'user_from': user_to,
+        'user_to': user_from
+    }
+    for user in users:
+        if user['user_name'] == user_to:
+            user['ws'].send(json.dumps(message).encode())
+            break
+    return JsonResponse({})
+
+
 urlpatterns = [
-    path('login', login)
+    path('login', login),
+    path('test', test),
+    path('description_offer', description_offer),
+    path('description_answer', description_answer),
+    path('ic_offer', ic_offer),
+    path('ic_answer', ic_answer),
 ]
