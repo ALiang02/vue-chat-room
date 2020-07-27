@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>聊天室</h1>
         <div class="login-form">
             <div class="avtar">
                 <img src="../assets/login/images/avtar.png" />
@@ -18,8 +17,6 @@
 </template>
 
 <script>
-import store from "../store";
-
 export default {
     data: function () {
         return {
@@ -32,15 +29,18 @@ export default {
 
     methods: {
         login() {
-            store
+            this.$store
                 .dispatch("req", {
                     url: "login",
-                    data: {
-                        username: this.user_name,
-                        user_pwd: this.user_pwd,
-                    },
+                    data: this.user,
                 })
-                .then((rep) => console.log(rep));
+                .then((rep) => {
+                    if (rep.data["flag"] === 0) {
+                        this.$router.push("/center");
+                    } else {
+                        alert("账号或密码错误");
+                    }
+                });
         },
     },
 };

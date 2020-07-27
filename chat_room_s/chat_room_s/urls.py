@@ -13,6 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import json
+
 from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import path
@@ -20,9 +22,10 @@ from data_base import base
 
 
 def login(req):
-    flag = 0
-    user_name = req.POST.get('user_name')
-    user_pwd = req.POST.get('user_pwd')
+    req_data = json.loads(req.POST.get('data'))
+    print(req_data)
+    user_name = req_data['user_name']
+    user_pwd = req_data['user_pwd']
     print(user_name)
     print(user_pwd)
     sql = "SELECT * FROM user WHERE user_name  = '%s'" % user_name

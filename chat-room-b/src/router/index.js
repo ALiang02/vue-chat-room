@@ -3,12 +3,20 @@ import Vue from 'vue'
 
 Vue.use(Router)
 
-const myView = () => import('../views/login-page.vue')
+const center_view = () => import("../views/center_view.vue")
+const login_view = () => import("../views/login_view.vue")
 
 const routes = [{
 	path: '/',
-	name: 'myView',
-	component: myView
+	redirect: '/login'
+}, {
+	path: '/center',
+	name: 'center_view',
+	component: center_view
+}, {
+	path: '/login',
+	name: 'login_view',
+	component: login_view
 }]
 
 const router = new Router({
