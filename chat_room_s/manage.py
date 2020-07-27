@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chatr_oom_s.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chat_room_s.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

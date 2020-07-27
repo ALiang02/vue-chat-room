@@ -1,42 +1,7 @@
 <template>
-    <!-- <el-card>
-        <div>
-            <h2>聊天室</h2>
-        </div>
-        <div class="container">
-            <label for="user_name">用户名：</label>
-            <input
-                id="user_name"
-                name="user_name"
-                type="text"
-                placeholder="用户名"
-                v-model="user.user_name"
-            />
-        </div>
-        <div class="container">
-            <label for="user_pwd">密码：</label>
-            <input
-                id="user_pwd"
-                name="user_pwd"
-                type="password"
-                placeholder="密码"
-                v-model="user.user_pwd"
-            />
-        </div>
-        <div>
-            <button id="btn_login" @click="login">登录</button>
-        </div>
-    </el-card>-->
     <div>
         <h1>聊天室</h1>
         <div class="login-form">
-            <!-- <div class="close"></div> -->
-            <!-- <div class="head-info">
-                <label class="lbl-1"></label>
-                <label class="lbl-2"></label>
-                <label class="lbl-3"></label>
-            </div>-->
-            <!-- <div class="clear"></div> -->
             <div class="avtar">
                 <img src="../assets/login/images/avtar.png" />
             </div>
@@ -53,6 +18,8 @@
 </template>
 
 <script>
+import store from "../store";
+
 export default {
     data: function () {
         return {
@@ -64,7 +31,17 @@ export default {
     },
 
     methods: {
-        login() {},
+        login() {
+            store
+                .dispatch("req", {
+                    url: "login",
+                    data: {
+                        username: this.user_name,
+                        user_pwd: this.user_pwd,
+                    },
+                })
+                .then((rep) => console.log(rep));
+        },
     },
 };
 </script>

@@ -14,8 +14,36 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.http import JsonResponse
 from django.urls import path
+from data_base import base
+
+
+def login(req):
+    flag = 0
+    user_name = req.POST.get('user_name')
+    user_pwd = req.POST.get('user_pwd')
+    print(user_name)
+    print(user_pwd)
+    sql = "SELECT * FROM user WHERE user_name  = '%s'" % user_name
+    results = base.execute_sql(sql, 'select')
+    print(results)
+    if not results:
+        flag = 1
+    else:
+        print(type(results[0][1]))
+        if str(results[0][1]) == user_pwd:
+            flag = 0
+        else:
+            flag = 1
+
+    print(flag)
+    data = {
+        'flag': flag
+    }
+    return JsonResponse(data)
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('login', login)
 ]
