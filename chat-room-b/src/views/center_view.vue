@@ -63,13 +63,13 @@ export default {
                 );
             } else if (data["act"] === "ic_offer") {
                 console.log("9远端加载本地ic");
-
+                console.log(data["ic"]);
                 this.remotePeerConnection.addIceCandidate(
                     new RTCIceCandidate(data["ic"])
                 );
             } else if (data["act"] === "ic_answer") {
                 console.log("10本地加载远端ic");
-                console.log(data);
+                console.log(data["ic"]);
                 this.localPeerConnection.addIceCandidate(
                     new RTCIceCandidate(data["ic"])
                 );
@@ -136,6 +136,8 @@ export default {
             const iceCandidate = event.candidate;
 
             if (iceCandidate) {
+                console.log("本地发送前：");
+                console.log(iceCandidate);
                 console.log("7本地加载远端description完成，向远端发送ic");
                 // const newIceCandidate = new RTCIceCandidate(iceCandidate);
                 this.$store.dispatch("req", {
@@ -152,6 +154,8 @@ export default {
             const iceCandidate = event.candidate;
 
             if (iceCandidate) {
+                console.log("远端发送前：");
+                console.log(iceCandidate);
                 console.log("8远端加载本地description完成，向本地发送ic");
                 // const newIceCandidate = new RTCIceCandidate(iceCandidate);
                 this.$store.dispatch("req", {

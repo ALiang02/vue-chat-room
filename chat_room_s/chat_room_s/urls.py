@@ -134,7 +134,7 @@ def ic_offer(req):
 
     message = {
         'act': 'ic_offer',
-        'description': ic,
+        'ic': ic,
         'user_from': user_to,
         'user_to': user_from
     }
@@ -154,7 +154,7 @@ def ic_answer(req):
 
     message = {
         'act': 'ic_answer',
-        'description': ic,
+        'ic': ic,
         'user_from': user_to,
         'user_to': user_from
     }
